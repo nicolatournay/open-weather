@@ -18,10 +18,23 @@ var apiKey = "5bbccc6c983e2172d96f63d9873c9f5a";
 
 select.addEventListener("change", function() {
     var value = select.value;
-    console.log(value);
     fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=1&appid=${apiKey}`)
         .then(response => response.json())
-        .then(data => {    console.log(data);  })
+        .then(data => {
+            var lat = data[0].lat;
+            var lon = data[0].lon;
+            searchWeather(lat, lon);
+        })
         .catch(error => {    console.error("Erreur lors de la récupération des données :", error);
     });
 });
+
+function searchWeather(lat, lon) {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {    console.error("Erreur lors de la récupération des données :", error); 
+    });
+}
